@@ -1,6 +1,6 @@
-This is JetSetGo App
+# This is JetSetGo App
 
-# Getting Started
+## Getting Started
 
 ## Step 1: Start the Metro Server
 
