@@ -1,27 +1,27 @@
-import {View, Text, StyleSheet, Pressable} from 'react-native';
-import React, {useState} from 'react';
+import { View, Text, StyleSheet, Pressable } from "react-native";
+import React, { useState } from "react";
 import {
   Directions,
   Gesture,
   GestureDetector,
-} from 'react-native-gesture-handler';
+} from "react-native-gesture-handler";
 import Animated, {
   FadeIn,
   FadeInUp,
   FadeOut,
   SlideInRight,
   SlideOutLeft,
-} from 'react-native-reanimated';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import {STRING_CONSTANTS} from '../../utils/stringConstants';
-import {navigationConstants} from '../../utils/navigationConstants';
-import {OnboardingScreenProps} from '../../utils/types';
+} from "react-native-reanimated";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Fontisto from "react-native-vector-icons/Fontisto";
+import { STRING_CONSTANTS } from "../../utils/stringConstants";
+import { navigationConstants } from "../../utils/navigationConstants";
+import { OnboardingScreenProps } from "../../utils/types";
 
 // Onboarding steps data
 const OnboardingData = STRING_CONSTANTS.onboardingSteps;
 
-const OnboardingScreen = ({navigation}: OnboardingScreenProps) => {
+const OnboardingScreen = ({ navigation }: OnboardingScreenProps) => {
   const [screenIndex, setScreenIndex] = useState(0);
   const data = OnboardingData[screenIndex];
 
@@ -30,7 +30,7 @@ const OnboardingScreen = ({navigation}: OnboardingScreenProps) => {
     if (screenIndex === OnboardingData.length - 1) {
       onEndOnboarding();
     } else {
-      setScreenIndex(prevIndex => prevIndex + 1);
+      setScreenIndex((prevIndex) => prevIndex + 1);
     }
   };
 
@@ -39,7 +39,7 @@ const OnboardingScreen = ({navigation}: OnboardingScreenProps) => {
     if (screenIndex === 0) {
       onEndOnboarding();
     } else {
-      setScreenIndex(prevIndex => prevIndex - 1);
+      setScreenIndex((prevIndex) => prevIndex - 1);
     }
   };
 
@@ -52,7 +52,7 @@ const OnboardingScreen = ({navigation}: OnboardingScreenProps) => {
   // Handling swipes
   const swipes = Gesture.Simultaneous(
     Gesture.Fling().direction(Directions.LEFT).onEnd(onContinue),
-    Gesture.Fling().direction(Directions.RIGHT).onEnd(onBack),
+    Gesture.Fling().direction(Directions.RIGHT).onEnd(onBack)
   );
 
   return (
@@ -64,7 +64,7 @@ const OnboardingScreen = ({navigation}: OnboardingScreenProps) => {
             entering={FadeInUp.delay(50)}
             style={[
               styles.stepIndicator,
-              {backgroundColor: index === screenIndex ? '#94EA62' : 'gray'},
+              { backgroundColor: index === screenIndex ? "#94EA62" : "gray" },
             ]}
           />
         ))}
@@ -85,19 +85,24 @@ const OnboardingScreen = ({navigation}: OnboardingScreenProps) => {
             <Animated.Text
               entering={SlideInRight}
               exiting={SlideOutLeft}
-              style={styles.title}>
+              style={styles.title}
+            >
               {data.title}
             </Animated.Text>
             <Animated.Text
               entering={SlideInRight.delay(50)}
               exiting={SlideOutLeft}
-              style={styles.description}>
+              style={styles.description}
+            >
               {data.description}
             </Animated.Text>
           </View>
 
           <View style={styles.buttonRow}>
-            <Text style={styles.buttonText} onPress={onEndOnboarding}>
+            <Text
+              style={[styles.buttonText, { color: "#FFF" }]}
+              onPress={onEndOnboarding}
+            >
               Skip
             </Text>
 
@@ -116,8 +121,8 @@ export default OnboardingScreen;
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#0067FF',
+    justifyContent: "center",
+    backgroundColor: "#0067FF",
   },
 
   pageContent: {
@@ -126,7 +131,7 @@ const styles = StyleSheet.create({
   },
 
   stepIndicatorContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 8,
     marginHorizontal: 20,
     marginTop: 20,
@@ -139,49 +144,49 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    alignSelf: 'center',
+    alignSelf: "center",
     margin: 20,
     marginTop: 70,
   },
 
   footer: {
-    marginTop: 'auto',
+    marginTop: "auto",
   },
 
   title: {
-    color: '#FDFDFD',
+    color: "#FDFDFD",
     fontSize: 50,
     letterSpacing: 1.3,
     marginVertical: 10,
-    fontWeight: '700',
+    fontWeight: "700",
   },
 
   description: {
-    color: '#FFF',
+    color: "#FFF",
     fontSize: 20,
     lineHeight: 28,
-    fontWeight: '500',
+    fontWeight: "500",
   },
 
   buttonRow: {
     marginTop: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 20,
   },
 
   button: {
     flex: 1,
-    backgroundColor: '#FDFDFD',
+    backgroundColor: "#FDFDFD",
     borderRadius: 50,
-    alignItems: 'center',
+    alignItems: "center",
   },
 
   buttonText: {
-    color: '#000',
+    color: "#000",
     fontSize: 16,
     padding: 15,
     paddingHorizontal: 25,
-    fontWeight: '600',
+    fontWeight: "700",
   },
 });

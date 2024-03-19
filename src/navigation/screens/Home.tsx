@@ -17,6 +17,12 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import CustomBottomSheet from "../../components/CustomBottomSheet";
 import { filtersData } from "../../utils/filtersData";
 import Button from "../../components/Button";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withSpring,
+} from "react-native-reanimated";
 
 const Home = ({ navigation }: HomeScreenProps) => {
   // Getting screen dimensions
@@ -31,6 +37,10 @@ const Home = ({ navigation }: HomeScreenProps) => {
 
   // Ref for bottomsheet
   const bottomSheetRef = useRef<BottomSheet>(null);
+
+  // Shared value for animations
+  const offset = useSharedValue(-width);
+  const rotate = useSharedValue("0deg");
 
   // Function to fetch flights data
   const getFlightsData = () => {
@@ -52,11 +62,6 @@ const Home = ({ navigation }: HomeScreenProps) => {
       setFlightsList([...response]);
     });
   };
-
-  // useEffect to fetch flights data
-  useEffect(() => {
-    getFlightsData();
-  }, []);
 
   // Handle filter selection
   const handleFilterSelection = (item: string) => {
@@ -119,6 +124,41 @@ const Home = ({ navigation }: HomeScreenProps) => {
     setFlightsList([...flightsData]);
   };
 
+  // Animated flight icon component
+  const AnimatedFlightIconComponent =
+    Animated.createAnimatedComponent(Ionicons);
+
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [
+      {
+        translateX: offset.value,
+      },
+      {
+        rotate: rotate.value,
+      },
+    ],
+  }));
+
+  // useEffect to fetch flights data
+  useEffect(() => {
+    getFlightsData();
+
+    // Translate value
+    offset.value = withSpring(0, {
+      mass: 3,
+      damping: 30,
+    });
+
+    // Rotate value
+    rotate.value = withDelay(
+      300,
+      withSpring("-45deg", {
+        mass: 4,
+        damping: 20,
+      })
+    );
+  }, []);
+
   return (
     <>
       <View style={{ flex: 1 }}>
@@ -163,14 +203,16 @@ const Home = ({ navigation }: HomeScreenProps) => {
             Next Flight
           </Text>
 
-          <Ionicons
+          <AnimatedFlightIconComponent
             name="airplane-outline"
             color={"#FFF"}
             size={50}
-            style={{
-              transform: [{ rotate: "-30deg" }],
-              marginLeft: width * 0.7,
-            }}
+            style={[
+              {
+                marginLeft: width * 0.7,
+              },
+              animatedStyles,
+            ]}
           />
         </View>
 
